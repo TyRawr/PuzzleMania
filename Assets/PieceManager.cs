@@ -49,8 +49,6 @@ public class PieceManager : MonoBehaviour
             }
             myLoadedAssetBundle = www.assetBundle;
         }
-        
-        
         Texture2D tex = myLoadedAssetBundle.LoadAsset("Assets/Images/" + imgName + ".jpeg") as Texture2D;
         GameObject piece = GameObject.Find("Piece");
         piece.GetComponent<Renderer>().material.mainTexture = tex;
@@ -60,8 +58,6 @@ public class PieceManager : MonoBehaviour
     {
         camera = Camera.main;
         pieceRenderers = new Renderer[rows, cols];
-        //topConnector = new bool[rows, cols];
-        //rightConnector = new bool[rows, cols];
         rightConnector = RotateTexture(connector, true);
         rightInverted = RotateTexture(invertedConnector, true);
         rightWall = RotateTexture(wall, true);
@@ -74,7 +70,6 @@ public class PieceManager : MonoBehaviour
         downInverted = FlipTexture(invertedConnector);
         downWall = FlipTexture(wall);
         StartCoroutine(GetImage());
-        //BuildPieces();
     }
 
     bool multiTouch = false;
@@ -99,10 +94,20 @@ public class PieceManager : MonoBehaviour
             // Store both touches.
             Touch touchZero = Input.GetTouch(0);
             Touch touchOne = Input.GetTouch(1);
+            if(!multiTouch)
+            {
+                multiTouch = true;
+                dist = Vector3.Distance(touchZero.position, touchOne.position);
+                dist1 = dist;
+            } else
+            {
+                dist = dist1;
+                dist1 = Vector3.Distance(touchZero.position, touchOne.position);
+            }
 
             // Find the position in the previous frame of each touch.
             Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition; 
 
             // Find the magnitude of the vector (the distance) between the touches in each frame.
             float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
@@ -113,7 +118,15 @@ public class PieceManager : MonoBehaviour
 
             // If the camera is orthographic...
             // ... change the orthographic size based on the change in distance between the touches.
-            camera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+            camera.orthographicSize += (dist - dist1)/100f;
+            if(camera.orthographicSize < 1)
+            {
+                camera.orthographicSize = 1;
+            }
+            if(camera.orthographicSize > 8)
+            {
+                camera.orthographicSize = 8;
+            }
 
             // Make sure the orthographic size never drops below zero.
             camera.orthographicSize = Mathf.Max(camera.orthographicSize, 0.1f);
