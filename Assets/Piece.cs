@@ -9,15 +9,15 @@ public class Piece : MonoBehaviour {
     public Piece upPiece, rightPiece, leftPiece, downPiece;
     public PieceAdapter m_topAdapter, m_rightAdapter, m_bottomAdapter, m_leftAdapter;
 
-    public bool m_held = false;
+    public bool m_held, m_heldInitial = false;
     public List<Piece> m_potentialMatches = new List<Piece>();
     public List<Piece> m_successfulMatches = new List<Piece>();
     private Dictionary<PieceAdapter, PieceAdapter> m_pieceAdapterDictionary = new Dictionary<PieceAdapter, PieceAdapter>();
 
     private Camera camera;
-    
-	// Use this for initialization
-	void Start () {
+    Vector3 offset;
+    // Use this for initialization
+    void Start () {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         m_topAdapter = transform.GetChild(0).GetComponent<PieceAdapter>();
         m_rightAdapter = transform.GetChild(1).GetComponent<PieceAdapter>();
@@ -59,14 +59,23 @@ public class Piece : MonoBehaviour {
                 touchPos = Input.mousePosition;
             }
             touchPos = camera.ScreenToWorldPoint(touchPos);
+            if (!m_heldInitial)
+            {
+                // calculate offset
+                m_heldInitial = true;
+                offset = touchPos - transform.position;
+                offset = new Vector3(offset.x, offset.y, 0f);
+            }
             Vector3 pos = new Vector3(touchPos.x, touchPos.y, 0f);
 
             
             
-            this.transform.position = pos;
+            this.transform.position = pos - offset;
             //everything I am attached to, move
             StartAlignment();
         }
+        
+
     }
 
     private void StartAlignment()
@@ -221,6 +230,7 @@ public class Piece : MonoBehaviour {
     void OnMouseDown()
     {
         m_held = true;
+        m_heldInitial = false;
     }
     
     public void AssignPieceAsSuccessfulMatch(Piece p)
@@ -234,6 +244,7 @@ public class Piece : MonoBehaviour {
     void OnMouseUp()
     {
         m_held = false;
+        m_heldInitial = false;
         // handle attaching piece
         foreach (Piece p in m_potentialMatches)
         {
@@ -279,6 +290,54 @@ public class Piece : MonoBehaviour {
             }
         }
         StartAlignment();
+
+        float screenAspectRatio = (float)Screen.width / (float)Screen.height;
+
+        // Get Max and Min positions from parent
+        Renderer parentRenderer = transform.parent.GetComponent<Renderer>();
+        Bounds parentBounds = parentRenderer.bounds;
+
+        BoxCollider renderer = gameObject.GetComponent<BoxCollider>();
+        Bounds bounds = renderer.bounds;
+
+        if (bounds.Intersects(parentBounds))
+        {
+            Debug.Log("Intersects" + parentBounds.max);
+        } else
+        {
+            Debug.Log("Not Intersects");
+            float maxXPosition = parentBounds.max.x;
+            float maxYPosition = parentBounds.max.y;
+            float minYPosition = parentBounds.min.y;
+            float minXPosition = parentBounds.min.x;
+            Debug.Log("maxXPosition" + maxXPosition);
+            Debug.Log("maxYPosition" + maxYPosition);
+            Debug.Log("minXPosition" + minXPosition);
+            Debug.Log("minYPosition" + minYPosition);
+            Debug.Log("bounds.cente" + bounds.center);
+            if (bounds.center.x > maxXPosition)
+            {
+                Debug.Log("Not Intersects 1" );
+                transform.position = new Vector3(parentBounds.max.x - bounds.size.x/2, transform.position.y, transform.position.z);
+            }
+            if (bounds.center.x < minXPosition)
+            {
+                Debug.Log("Not Intersects 2");
+                transform.position = new Vector3(parentBounds.min.x + bounds.size.x / 2, transform.position.y, transform.position.z);
+            }
+            if (bounds.center.y > maxYPosition)
+            {
+                Debug.Log("Not Intersects 3");
+                transform.position = new Vector3(transform.position.x, parentBounds.max.y - bounds.size.y / 2, transform.position.z);
+            }
+            if (bounds.center.y < minYPosition)
+            {
+                Debug.Log("Not Intersects4");
+                transform.position = new Vector3(transform.position.x, parentBounds.min.y + bounds.size.y / 2, transform.position.z);
+            }
+        }
+
+        
     }
 
 

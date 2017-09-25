@@ -12,14 +12,39 @@ public class PieceManager : MonoBehaviour
     private Texture2D rightConnector, rightInverted, rightWall;
     private Texture2D downConnector, downInverted, downWall;
     private Texture2D leftConnector, leftInverted, leftWall;
+    private Camera camera;
 
     [SerializeField]
     private int cols, rows;
 
     private Renderer[,] pieceRenderers;
-    
+    public string url = "https://cdn.shopify.com/s/files/1/1640/4727/products/hnsstepout_grande.png";
+
+
+    IEnumerator GetImage()
+    {
+        Caching.CleanCache();
+        Texture2D tex;
+        tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+
+        WWW www = new WWW(url);
+        yield return www;
+        // assign texture
+        //Renderer renderer = GetComponent<Renderer>();
+        //renderer.material.mainTexture = www.texture;
+        GameObject piece = GameObject.Find("Piece");
+        if (www.texture == null) Debug.Log("NULL");
+        else Debug.Log("NOT NULL asf " + www.isDone);
+
+
+        www.LoadImageIntoTexture(tex);
+        
+        piece.GetComponent<Renderer>().material.mainTexture = www.texture; 
+        BuildPieces();
+    }
     void Start()
     {
+        camera = Camera.main;
         pieceRenderers = new Renderer[rows, cols];
         //topConnector = new bool[rows, cols];
         //rightConnector = new bool[rows, cols];
@@ -34,8 +59,58 @@ public class PieceManager : MonoBehaviour
         downConnector = FlipTexture(connector);
         downInverted = FlipTexture(invertedConnector);
         downWall = FlipTexture(wall);
-        BuildPieces();
+        StartCoroutine(GetImage());
+        //BuildPieces();
     }
+
+    bool multiTouch = false;
+    float dist = 2f;
+    float dist1 = 2f;
+    Vector3 p1 = new Vector3(0f, 0f, 0f);
+    Vector3 p2;
+    public float perspectiveZoomSpeed = 0.5f;        // The rate of change of the field of view in perspective mode.
+    public float orthoZoomSpeed = 0.5f;        // The rate of change of the orthographic size in orthographic mode.
+
+
+    private void Update()
+    {
+        Debug.Log((float)Screen.width);
+        Debug.Log((float)Screen.height);
+        Debug.Log((float)Screen.width / (float)Screen.height);
+
+        if(Input.touchCount >= 2)
+        {
+            //STOP HERE
+
+            // Store both touches.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // Find the difference in the distances between each frame.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+            // If the camera is orthographic...
+            // ... change the orthographic size based on the change in distance between the touches.
+            camera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+
+            // Make sure the orthographic size never drops below zero.
+            camera.orthographicSize = Mathf.Max(camera.orthographicSize, 0.1f);
+            
+        } else
+        {
+            multiTouch = false;
+        }
+       
+    }
+
     Texture2D FlipTexture(Texture2D original)
     {
         Texture2D flipped = new Texture2D(original.width, original.height);
@@ -195,7 +270,7 @@ public class PieceManager : MonoBehaviour
         float uvHeight = 1.0f / rows;
 
         Piece[,] pieces = new Piece[rows, cols];
-
+        GameObject gameboard = GameObject.Find("Gameboard");
         for (int j = 0; j < cols; j++)
         {
             for (int i = 0; i < rows; i++)
@@ -215,6 +290,7 @@ public class PieceManager : MonoBehaviour
                 mesh.uv = uvs;
 
                 offset.x += 1.25f;
+                piece.transform.SetParent(gameboard.transform);
             }
             offset.y += 1.25f;
             offset.x = startX;
@@ -342,7 +418,11 @@ public class PieceManager : MonoBehaviour
     private void OnGUI()
     {
         if (GUI.Button(new Rect(10, 10, 150, 100), "Reset Puzzle"))
+        {
             BuildPieces();
+            AndroidDialog dialog = AndroidDialog.Create("Test", "Message");
+        }
+            
     }
 }
 
