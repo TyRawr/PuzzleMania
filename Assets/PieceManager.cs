@@ -18,28 +18,42 @@ public class PieceManager : MonoBehaviour
     private int cols, rows;
 
     private Renderer[,] pieceRenderers;
-    public string url = "https://cdn.shopify.com/s/files/1/1640/4727/products/hnsstepout_grande.png";
+    public string url = "https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/giraffe.jpeg";
+    public string assetName;
 
-
-    IEnumerator GetImage()
+    IEnumerator GetImage(string imgName = "duck")
     {
-        Caching.CleanCache();
-        Texture2D tex;
-        tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        AssetBundle myLoadedAssetBundle = null;
+        AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
+        Debug.Log("number of bundles " + bundles.Length);
 
-        WWW www = new WWW(url);
-        yield return www;
-        // assign texture
-        //Renderer renderer = GetComponent<Renderer>();
-        //renderer.material.mainTexture = www.texture;
-        GameObject piece = GameObject.Find("Piece");
-        if (www.texture == null) Debug.Log("NULL");
-        else Debug.Log("NOT NULL asf " + www.isDone);
-
-
-        www.LoadImageIntoTexture(tex);
+        for (int i = 0; i < bundles.Length; i++)
+        {
+            Debug.Log("Bundle: " + bundles[i].name);
+            if(bundles[i].name == "images.unity3d")
+            {
+                myLoadedAssetBundle = bundles[i];
+            }
+        }
+        if(myLoadedAssetBundle == null)
+        {
+            while (!Caching.ready)
+                yield return null;
+            Caching.CleanCache();
+            var www = WWW.LoadFromCacheOrDownload("https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/images.unity3d", 5);
+            yield return www;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+                Debug.Log(www.error);
+                yield return null;
+            }
+            myLoadedAssetBundle = www.assetBundle;
+        }
         
-        piece.GetComponent<Renderer>().material.mainTexture = www.texture; 
+        
+        Texture2D tex = myLoadedAssetBundle.LoadAsset("Assets/Images/" + imgName + ".jpeg") as Texture2D;
+        GameObject piece = GameObject.Find("Piece");
+        piece.GetComponent<Renderer>().material.mainTexture = tex;
         BuildPieces();
     }
     void Start()
@@ -417,12 +431,22 @@ public class PieceManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 150, 100), "Reset Puzzle"))
+        /*
+        if (GUI.Button(new Rect(10, 10, 300 , 150), "Reset Puzzle"))
         {
             BuildPieces();
-            AndroidDialog dialog = AndroidDialog.Create("Test", "Message");
+            //AndroidDialog dialog = AndroidDialog.Create("Test", "Message");
         }
-            
+        */
+        if (GUI.Button(new Rect(10, 10, 300, 150), "Load Duck"))
+        {
+            StartCoroutine(GetImage());
+        }
+        if (GUI.Button(new Rect(10, 160, 300, 150), "Load Giraffe"))
+        {
+            StartCoroutine(GetImage("giraffe"));
+        }
+
     }
 }
 
