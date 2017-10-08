@@ -278,7 +278,7 @@ public class PieceManager : MonoBehaviour
         return texture;
     }
 
-    void BuildPieces()
+    public void BuildPieces()
     {
         Object[] oldPieces = GameObject.FindObjectsOfType(typeof(Piece));
         foreach(Piece p in oldPieces)

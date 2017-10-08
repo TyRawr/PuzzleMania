@@ -58,6 +58,11 @@ public class Piece : MonoBehaviour {
             {
                 touchPos = Input.mousePosition;
             }
+            if(Input.touchCount > 1)
+            {
+                m_held = false;
+                m_heldInitial = false;
+            }
             touchPos = camera.ScreenToWorldPoint(touchPos);
             if (!m_heldInitial)
             {
