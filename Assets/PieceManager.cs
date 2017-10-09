@@ -21,9 +21,10 @@ public class PieceManager : MonoBehaviour
     public string url = "https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/giraffe.jpeg";
     public string assetName;
 
-    IEnumerator GetImage(string imgName = "duck")
+    public IEnumerator GetImage(string imgName = "duck")
     {
-        AssetBundle myLoadedAssetBundle = null;
+        AssetBundle myLoadedImagesAssetBundle = null;
+        
         AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
         Debug.Log("number of bundles " + bundles.Length);
 
@@ -32,10 +33,11 @@ public class PieceManager : MonoBehaviour
             Debug.Log("Bundle: " + bundles[i].name);
             if(bundles[i].name == "images.unity3d")
             {
-                myLoadedAssetBundle = bundles[i];
+                myLoadedImagesAssetBundle = bundles[i];
             }
+            
         }
-        if(myLoadedAssetBundle == null)
+        if(myLoadedImagesAssetBundle == null)
         {
             while (!Caching.ready)
                 yield return null;
@@ -47,15 +49,35 @@ public class PieceManager : MonoBehaviour
                 Debug.Log(www.error);
                 yield return null;
             }
-            myLoadedAssetBundle = www.assetBundle;
+            myLoadedImagesAssetBundle = www.assetBundle;
         }
-        Texture2D tex = myLoadedAssetBundle.LoadAsset("Assets/Images/" + imgName + ".jpeg") as Texture2D;
+
+
+
+        Texture2D tex = myLoadedImagesAssetBundle.LoadAsset("Assets/Images/" + imgName + "_512.jpeg") as Texture2D;
         GameObject piece = GameObject.Find("Piece");
         piece.GetComponent<Renderer>().material.mainTexture = tex;
+        GameObject gameBoard = GameObject.Find("Gameboard");
+        gameBoard.transform.position = Vector3.zero;
         BuildPieces();
+        ResetPieces();
     }
+
+    public static PieceManager instance;
+
+    public void ResetPieces()
+    {
+        foreach(var go in pieceRenderers)
+        {
+            float rx = Random.Range(-3.5f, 3.5f);
+            float ry = Random.Range(-3.5f, 3.5f);
+            go.transform.position = new Vector3(rx, ry, 0f);
+        }
+    }
+
     void Start()
     {
+        instance = this;
         camera = Camera.main;
         pieceRenderers = new Renderer[rows, cols];
         rightConnector = RotateTexture(connector, true);
@@ -69,7 +91,9 @@ public class PieceManager : MonoBehaviour
         downConnector = FlipTexture(connector);
         downInverted = FlipTexture(invertedConnector);
         downWall = FlipTexture(wall);
-        StartCoroutine(GetImage());
+        GameObject gameboard = GameObject.Find("Gameboard");
+        gameboard.GetComponent<MeshRenderer>().enabled = false;
+        //StartCoroutine(GetImage());
     }
 
     bool multiTouch = false;
@@ -118,7 +142,7 @@ public class PieceManager : MonoBehaviour
 
             // If the camera is orthographic...
             // ... change the orthographic size based on the change in distance between the touches.
-            camera.orthographicSize += (dist - dist1)/100f;
+            camera.orthographicSize += (dist - dist1)/150f;
             if(camera.orthographicSize < 1)
             {
                 camera.orthographicSize = 1;
@@ -280,6 +304,8 @@ public class PieceManager : MonoBehaviour
 
     public void BuildPieces()
     {
+        GameObject gameboard = GameObject.Find("Gameboard");
+        gameboard.GetComponent<MeshRenderer>().enabled = true;
         Object[] oldPieces = GameObject.FindObjectsOfType(typeof(Piece));
         foreach(Piece p in oldPieces)
         {
@@ -297,7 +323,6 @@ public class PieceManager : MonoBehaviour
         float uvHeight = 1.0f / rows;
 
         Piece[,] pieces = new Piece[rows, cols];
-        GameObject gameboard = GameObject.Find("Gameboard");
         for (int j = 0; j < cols; j++)
         {
             for (int i = 0; i < rows; i++)
@@ -450,7 +475,7 @@ public class PieceManager : MonoBehaviour
             BuildPieces();
             //AndroidDialog dialog = AndroidDialog.Create("Test", "Message");
         }
-        */
+        
         if (GUI.Button(new Rect(10, 10, 300, 150), "Load Duck"))
         {
             StartCoroutine(GetImage());
@@ -459,7 +484,7 @@ public class PieceManager : MonoBehaviour
         {
             StartCoroutine(GetImage("giraffe"));
         }
-
+        */
     }
 }
 

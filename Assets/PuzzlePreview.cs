@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PuzzlePreview : MonoBehaviour {
 
+    public string puzzleName;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,7 +18,9 @@ public class PuzzlePreview : MonoBehaviour {
 
     public void Click()
     {
-        Debug.Log("CLICK");
-
+        Debug.Log("CLICK " + puzzleName);
+        ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleName));
+        PlayMenu.instance.gameObject.SetActive(false);
+        SideSettingsMenu.instance.gameObject.SetActive(true);
     }
 }
