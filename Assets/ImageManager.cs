@@ -74,6 +74,7 @@ public class ImageManager : MonoBehaviour {
     {
         AssetBundle myLoadedThumbsAssetBundle = null;
         AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
+        Caching.CleanCache();
         for (int i = 0; i < bundles.Length; i++)
         {
             Debug.Log("Bundle: " + bundles[i].name);
@@ -86,7 +87,6 @@ public class ImageManager : MonoBehaviour {
         {
             while (!Caching.ready)
                 yield return null;
-            Caching.CleanCache();
             var www = WWW.LoadFromCacheOrDownload("https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/thumbs.unity3d", 4);
             yield return www;
             if (!string.IsNullOrEmpty(www.error))
@@ -100,18 +100,22 @@ public class ImageManager : MonoBehaviour {
         // get parent for thumbs
         GameObject thumbsParent = GameObject.Find("Canvas/Play Menu/Scroll/Content");
         // load game objects
-        GameObject[] thumbGameObjects = new GameObject[imageNames.Length];
+        GameObject[] thumbGameObjects = new GameObject[61];
         for(int i = 0; i < thumbGameObjects.Length; i++)
         {
             thumbGameObjects[i] = GameObject.Instantiate(thumbnailPrefab) as GameObject;
             thumbGameObjects[i].gameObject.transform.parent = thumbsParent.transform;
             Image img = thumbGameObjects[i].GetComponent<Image>();
-            Texture2D tex = myLoadedThumbsAssetBundle.LoadAsset("Assets/Images/" + imageNames[i] + "_128.jpeg") as Texture2D;
+            Texture2D tex = myLoadedThumbsAssetBundle.LoadAsset("Assets/Images/thumbs/file_" + i + ".jpeg") as Texture2D;
             GameObject go = thumbGameObjects[i].gameObject;
             Material m = new Material(Shader.Find("UI/Default"));
             go.GetComponent<Image>().material = m;
+            if(tex == null)
+            {
+                go.GetComponent<Image>().material.color = Color.black;
+            }
             go.GetComponent<Image>().material.mainTexture = tex;
-            go.GetComponent<PuzzlePreview>().puzzleName = imageNames[i];
+            go.GetComponent<PuzzlePreview>().puzzleName = i.ToString();
         }
     }
 }

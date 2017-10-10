@@ -54,7 +54,7 @@ public class PieceManager : MonoBehaviour
 
 
 
-        Texture2D tex = myLoadedImagesAssetBundle.LoadAsset("Assets/Images/" + imgName + "_512.jpeg") as Texture2D;
+        Texture2D tex = myLoadedImagesAssetBundle.LoadAsset("Assets/Images/originals/file_" + imgName + ".jpeg") as Texture2D;
         GameObject piece = GameObject.Find("Piece");
         piece.GetComponent<Renderer>().material.mainTexture = tex;
         GameObject gameBoard = GameObject.Find("Gameboard");
