@@ -104,10 +104,11 @@ public class ImageManager : MonoBehaviour {
         for(int i = 0; i < thumbGameObjects.Length; i++)
         {
             thumbGameObjects[i] = GameObject.Instantiate(thumbnailPrefab) as GameObject;
-            thumbGameObjects[i].gameObject.transform.parent = thumbsParent.transform;
+            thumbGameObjects[i].gameObject.transform.SetParent(thumbsParent.transform,false);
+            thumbGameObjects[i].transform.localScale = Vector3.one;
             Image img = thumbGameObjects[i].GetComponent<Image>();
             Texture2D tex = myLoadedThumbsAssetBundle.LoadAsset("Assets/Images/thumbs/file_" + i + ".jpeg") as Texture2D;
-            GameObject go = thumbGameObjects[i].gameObject;
+            GameObject go = thumbGameObjects[i].transform.GetChild(1).gameObject;
             Material m = new Material(Shader.Find("UI/Default"));
             go.GetComponent<Image>().material = m;
             if(tex == null)

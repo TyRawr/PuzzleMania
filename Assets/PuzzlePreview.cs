@@ -19,8 +19,11 @@ public class PuzzlePreview : MonoBehaviour {
     public void Click()
     {
         Debug.Log("CLICK " + puzzleName);
+        PlayMenu.instance.SetSelected(puzzleName, gameObject.transform.parent.gameObject);
+        /*
         ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleName));
         PlayMenu.instance.gameObject.SetActive(false);
         SideSettingsMenu.instance.gameObject.SetActive(true);
+        */
     }
 }
