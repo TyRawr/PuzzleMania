@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour {
     public SideSettingsMenu sideSettingMenu;
     public PlayMenu playMenu;
+    public SetupMenu setupMenu;
 
     public static MainMenu instance;
 	// Use this for initialization

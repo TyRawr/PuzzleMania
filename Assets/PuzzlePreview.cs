@@ -23,7 +23,6 @@ public class PuzzlePreview : MonoBehaviour {
         /*
         ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleName));
         PlayMenu.instance.gameObject.SetActive(false);
-        SideSettingsMenu.instance.gameObject.SetActive(true);
         */
     }
 }

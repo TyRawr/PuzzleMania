@@ -21,6 +21,11 @@ public class PieceManager : MonoBehaviour
     public string url = "https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/giraffe.jpeg";
     public string assetName;
 
+    public void SetColsAndRows(int numberOfRowsAndCols)
+    {
+        cols = rows = numberOfRowsAndCols;
+    }
+
     public IEnumerator GetImage(string imgName = "duck")
     {
         AssetBundle myLoadedImagesAssetBundle = null;
@@ -107,10 +112,11 @@ public class PieceManager : MonoBehaviour
 
     private void Update()
     {
+        /*
         Debug.Log((float)Screen.width);
         Debug.Log((float)Screen.height);
         Debug.Log((float)Screen.width / (float)Screen.height);
-
+        */
         if(Input.touchCount >= 2)
         {
             //STOP HERE
@@ -314,7 +320,7 @@ public class PieceManager : MonoBehaviour
                 GameObject.Destroy(p.gameObject);
             }
         }
-
+        pieceRenderers = new Renderer[rows, cols];
         Vector3 offset = Vector3.zero;
         offset.x = -(float)cols / 2.0f;
         offset.y = -(float)rows / 2.0f;

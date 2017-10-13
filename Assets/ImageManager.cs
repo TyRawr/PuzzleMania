@@ -70,6 +70,22 @@ public class ImageManager : MonoBehaviour {
     */
     string message = "";
 
+    public Texture2D GetThumbnail(string fileId)
+    {
+        AssetBundle myLoadedThumbsAssetBundle = null;
+        AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
+        for (int i = 0; i < bundles.Length; i++)
+        {
+            Debug.Log("Bundle: " + bundles[i].name);
+            if (bundles[i].name == "thumbs.unity3d")
+            {
+                myLoadedThumbsAssetBundle = bundles[i];
+            }
+        }
+        Texture2D tex = myLoadedThumbsAssetBundle.LoadAsset("Assets/Images/thumbs/file_" + fileId + ".jpeg") as Texture2D;
+        return tex;
+    }
+
     public IEnumerator LoadThumbnails()
     {
         AssetBundle myLoadedThumbsAssetBundle = null;

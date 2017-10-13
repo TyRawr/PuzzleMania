@@ -34,7 +34,7 @@ public class PlayMenu : MonoBehaviour {
             GameObject pieceManager = GameObject.Find("PieceManager");
             pieceManager.GetComponent<PieceManager>().BuildPieces();
             PlayMenu.instance.gameObject.SetActive(false);
-            SideSettingsMenu.instance.gameObject.SetActive(true);
+            //SideSettingsMenu.instance.gameObject.SetActive(true);
         }
     }
 
@@ -61,8 +61,8 @@ public class PlayMenu : MonoBehaviour {
 
     public void Play()
     {
-        ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleId));
         PlayMenu.instance.gameObject.SetActive(false);
-        MainMenu.instance.sideSettingMenu.gameObject.SetActive(true);
+        MainMenu.instance.setupMenu.gameObject.SetActive(true);
+        MainMenu.instance.setupMenu.Setup(puzzleId);
     }
 }
