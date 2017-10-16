@@ -26,7 +26,7 @@ public class SetupMenu : MonoBehaviour {
         SetupMenu.instance.gameObject.SetActive(false);
         MainMenu.instance.playMenu.gameObject.SetActive(true);
     }
-
+    Texture originalImage;
     public void Setup(string puzzleId = "")
     {
         this.puzzleId = puzzleId;
@@ -34,6 +34,8 @@ public class SetupMenu : MonoBehaviour {
         thumbnail.GetComponent<Image>().material = m;
         Texture2D tex =  ImageManager.instance.GetThumbnail(puzzleId);
         thumbnail.material.mainTexture = tex;
+        Texture2D originalSizedImage = null;
+        ImageManager.instance.StartCoroutine(ImageManager.instance.LoadTexture(puzzleId));
     }
 
     public void Play()
@@ -42,6 +44,12 @@ public class SetupMenu : MonoBehaviour {
         PieceManager.instance.SetColsAndRows(numPieces);
         MainMenu.instance.sideSettingMenu.gameObject.SetActive(true);
         SetupMenu.instance.gameObject.SetActive(false);
-        ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleId));
+        //ImageManager.instance.StartCoroutine(PieceManager.instance.GetImage(puzzleId));
+        GameObject piece = GameObject.Find("Piece"); 
+        piece.GetComponent<Renderer>().material.mainTexture = ImageManager.texture;
+        GameObject gameBoard = GameObject.Find("Gameboard");
+        gameBoard.transform.position = Vector3.zero;
+        PieceManager.instance.BuildPieces();
+        PieceManager.instance.ResetPieces();
     }
 }

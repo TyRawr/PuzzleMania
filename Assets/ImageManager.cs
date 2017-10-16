@@ -8,23 +8,11 @@ using VoxelBusters.Utility;
 using VoxelBusters.NativePlugins;
 
 public class ImageManager : MonoBehaviour {
-    public GameObject thumbnailPrefab;
-    public static readonly string[] imageNames = new string[] {
-        "candy_eggs1",
-        "dry_dock",
-        "duck",
-        "frog",
-        "giraffe",
-        "gummy_candy1",
-        "harbor",
-        "harbor1",
-        "harbor2",
-        "horse_landscape",
-        "jelly_beans",
-        "mountains"
-    };
-
     public static ImageManager instance;
+    public static Texture2D texture;
+    public GameObject thumbnailPrefab;
+
+    
     // Use this for initialization
     void Start() {
         instance = this;
@@ -134,5 +122,22 @@ public class ImageManager : MonoBehaviour {
             go.GetComponent<Image>().material.mainTexture = tex;
             go.GetComponent<PuzzlePreview>().puzzleName = i.ToString();
         }
+    }
+
+    /// <summary>
+    /// Loads the static texture (ImageManager.texture) from AWS, given the file name, of the form ("file_#.jpeg").
+    /// </summary>
+    /// <param name="imgNumber"></param>
+    /// <returns></returns>
+    public IEnumerator LoadTexture(string imgNumber)
+    {
+        while (!Caching.ready)
+            yield return null;
+        Caching.CleanCache();
+        var www = new WWW("https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/originals/file_" + imgNumber + ".jpeg" ); // all files are jpeg
+        ImageManager.texture = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        //WWW www = new WWW(url);
+        yield return www;
+        www.LoadImageIntoTexture(ImageManager.texture);
     }
 }

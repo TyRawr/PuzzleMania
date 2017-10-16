@@ -1,0 +1,187 @@
+ManifestFileVersion: 0
+CRC: 72898372
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: assets/images/originals/file_0.jpeg.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: assets/images/originals/file_1.jpeg.unity3d
+      Dependencies: {}
+    Info_2:
+      Name: assets/images/originals/file_10.jpeg.unity3d
+      Dependencies: {}
+    Info_3:
+      Name: assets/images/originals/file_11.jpeg.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: assets/images/originals/file_12.jpeg.unity3d
+      Dependencies: {}
+    Info_5:
+      Name: assets/images/originals/file_13.jpeg.unity3d
+      Dependencies: {}
+    Info_6:
+      Name: assets/images/originals/file_14.jpeg.unity3d
+      Dependencies: {}
+    Info_7:
+      Name: assets/images/originals/file_16.jpeg.unity3d
+      Dependencies: {}
+    Info_8:
+      Name: assets/images/originals/file_17.jpeg.unity3d
+      Dependencies: {}
+    Info_9:
+      Name: assets/images/originals/file_18.jpeg.unity3d
+      Dependencies: {}
+    Info_10:
+      Name: assets/images/originals/file_19.jpeg.unity3d
+      Dependencies: {}
+    Info_11:
+      Name: assets/images/originals/file_2.jpeg.unity3d
+      Dependencies: {}
+    Info_12:
+      Name: assets/images/originals/file_20.jpeg.unity3d
+      Dependencies: {}
+    Info_13:
+      Name: assets/images/originals/file_21.jpeg.unity3d
+      Dependencies: {}
+    Info_14:
+      Name: assets/images/originals/file_22.jpeg.unity3d
+      Dependencies: {}
+    Info_15:
+      Name: assets/images/originals/file_23.jpeg.unity3d
+      Dependencies: {}
+    Info_16:
+      Name: assets/images/originals/file_24.jpeg.unity3d
+      Dependencies: {}
+    Info_17:
+      Name: assets/images/originals/file_25.jpeg.unity3d
+      Dependencies: {}
+    Info_18:
+      Name: assets/images/originals/file_26.jpeg.unity3d
+      Dependencies: {}
+    Info_19:
+      Name: assets/images/originals/file_27.jpeg.unity3d
+      Dependencies: {}
+    Info_20:
+      Name: assets/images/originals/file_28.jpeg.unity3d
+      Dependencies: {}
+    Info_21:
+      Name: assets/images/originals/file_29.jpeg.unity3d
+      Dependencies: {}
+    Info_22:
+      Name: assets/images/originals/file_3.jpeg.unity3d
+      Dependencies: {}
+    Info_23:
+      Name: assets/images/originals/file_30.jpeg.unity3d
+      Dependencies: {}
+    Info_24:
+      Name: assets/images/originals/file_31.jpeg.unity3d
+      Dependencies: {}
+    Info_25:
+      Name: assets/images/originals/file_32.jpeg.unity3d
+      Dependencies: {}
+    Info_26:
+      Name: assets/images/originals/file_33.jpeg.unity3d
+      Dependencies: {}
+    Info_27:
+      Name: assets/images/originals/file_34.jpeg.unity3d
+      Dependencies: {}
+    Info_28:
+      Name: assets/images/originals/file_35.jpeg.unity3d
+      Dependencies: {}
+    Info_29:
+      Name: assets/images/originals/file_36.jpeg.unity3d
+      Dependencies: {}
+    Info_30:
+      Name: assets/images/originals/file_37.jpeg.unity3d
+      Dependencies: {}
+    Info_31:
+      Name: assets/images/originals/file_38.jpeg.unity3d
+      Dependencies: {}
+    Info_32:
+      Name: assets/images/originals/file_39.jpeg.unity3d
+      Dependencies: {}
+    Info_33:
+      Name: assets/images/originals/file_4.jpeg.unity3d
+      Dependencies: {}
+    Info_34:
+      Name: assets/images/originals/file_40.jpeg.unity3d
+      Dependencies: {}
+    Info_35:
+      Name: assets/images/originals/file_41.jpeg.unity3d
+      Dependencies: {}
+    Info_36:
+      Name: assets/images/originals/file_42.jpeg.unity3d
+      Dependencies: {}
+    Info_37:
+      Name: assets/images/originals/file_43.jpeg.unity3d
+      Dependencies: {}
+    Info_38:
+      Name: assets/images/originals/file_44.jpeg.unity3d
+      Dependencies: {}
+    Info_39:
+      Name: assets/images/originals/file_45.jpeg.unity3d
+      Dependencies: {}
+    Info_40:
+      Name: assets/images/originals/file_46.jpeg.unity3d
+      Dependencies: {}
+    Info_41:
+      Name: assets/images/originals/file_47.jpeg.unity3d
+      Dependencies: {}
+    Info_42:
+      Name: assets/images/originals/file_48.jpeg.unity3d
+      Dependencies: {}
+    Info_43:
+      Name: assets/images/originals/file_49.jpeg.unity3d
+      Dependencies: {}
+    Info_44:
+      Name: assets/images/originals/file_5.jpeg.unity3d
+      Dependencies: {}
+    Info_45:
+      Name: assets/images/originals/file_50.jpeg.unity3d
+      Dependencies: {}
+    Info_46:
+      Name: assets/images/originals/file_51.jpeg.unity3d
+      Dependencies: {}
+    Info_47:
+      Name: assets/images/originals/file_52.jpeg.unity3d
+      Dependencies: {}
+    Info_48:
+      Name: assets/images/originals/file_53.jpeg.unity3d
+      Dependencies: {}
+    Info_49:
+      Name: assets/images/originals/file_54.jpeg.unity3d
+      Dependencies: {}
+    Info_50:
+      Name: assets/images/originals/file_55.jpeg.unity3d
+      Dependencies: {}
+    Info_51:
+      Name: assets/images/originals/file_56.jpeg.unity3d
+      Dependencies: {}
+    Info_52:
+      Name: assets/images/originals/file_57.jpeg.unity3d
+      Dependencies: {}
+    Info_53:
+      Name: assets/images/originals/file_58.jpeg.unity3d
+      Dependencies: {}
+    Info_54:
+      Name: assets/images/originals/file_59.jpeg.unity3d
+      Dependencies: {}
+    Info_55:
+      Name: assets/images/originals/file_6.jpeg.unity3d
+      Dependencies: {}
+    Info_56:
+      Name: assets/images/originals/file_60.jpeg.unity3d
+      Dependencies: {}
+    Info_57:
+      Name: assets/images/originals/file_61.jpeg.unity3d
+      Dependencies: {}
+    Info_58:
+      Name: assets/images/originals/file_7.jpeg.unity3d
+      Dependencies: {}
+    Info_59:
+      Name: assets/images/originals/file_8.jpeg.unity3d
+      Dependencies: {}
+    Info_60:
+      Name: assets/images/originals/file_9.jpeg.unity3d
+      Dependencies: {}

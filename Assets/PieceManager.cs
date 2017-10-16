@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PieceManager : MonoBehaviour
 {
+    public static PieceManager instance;
+
     [SerializeField]
     private GameObject piecePrefab;
 
@@ -26,49 +28,6 @@ public class PieceManager : MonoBehaviour
         cols = rows = numberOfRowsAndCols;
     }
 
-    public IEnumerator GetImage(string imgName = "duck")
-    {
-        AssetBundle myLoadedImagesAssetBundle = null;
-        
-        AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
-        Debug.Log("number of bundles " + bundles.Length);
-
-        for (int i = 0; i < bundles.Length; i++)
-        {
-            Debug.Log("Bundle: " + bundles[i].name);
-            if(bundles[i].name == "images.unity3d")
-            {
-                myLoadedImagesAssetBundle = bundles[i];
-            }
-            
-        }
-        if(myLoadedImagesAssetBundle == null)
-        {
-            while (!Caching.ready)
-                yield return null;
-            Caching.CleanCache();
-            var www = WWW.LoadFromCacheOrDownload("https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/images.unity3d", 5);
-            yield return www;
-            if (!string.IsNullOrEmpty(www.error))
-            {
-                Debug.Log(www.error);
-                yield return null;
-            }
-            myLoadedImagesAssetBundle = www.assetBundle;
-        }
-
-
-
-        Texture2D tex = myLoadedImagesAssetBundle.LoadAsset("Assets/Images/originals/file_" + imgName + ".jpeg") as Texture2D;
-        GameObject piece = GameObject.Find("Piece");
-        piece.GetComponent<Renderer>().material.mainTexture = tex;
-        GameObject gameBoard = GameObject.Find("Gameboard");
-        gameBoard.transform.position = Vector3.zero;
-        BuildPieces();
-        ResetPieces();
-    }
-
-    public static PieceManager instance;
 
     public void ResetPieces()
     {
