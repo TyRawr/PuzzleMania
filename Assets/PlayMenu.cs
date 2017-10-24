@@ -10,6 +10,7 @@ public class PlayMenu : MonoBehaviour {
     public static PlayMenu instance;
     public GameObject ContentParent;
     public Button PlayButton;
+    public Texture2D fallbackCameraImg;
     private string puzzleId;
 	// Use this for initialization
 	void Start () {
@@ -22,19 +23,28 @@ public class PlayMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(Input.GetKeyDown(KeyCode.P) || Input.touchCount > 2)
+        {
+            PickImageFinished(ePickImageFinishReason.SELECTED, fallbackCameraImg);
+        }
 	}
 
     private void PickImageFinished(ePickImageFinishReason _reason, Texture2D _image)
     {
         if (_reason == ePickImageFinishReason.SELECTED)
         {
+            MainMenu.instance.cameraMenu.gameObject.SetActive(true);
+            MainMenu.instance.cameraMenu.PickImageFinished(_reason, _image);
+            
+            PlayMenu.instance.gameObject.SetActive(false);
+            /*
             GameObject piece = GameObject.Find("Piece");
             piece.GetComponent<Renderer>().material.mainTexture = _image;
             GameObject pieceManager = GameObject.Find("PieceManager");
             pieceManager.GetComponent<PieceManager>().BuildPieces();
-            PlayMenu.instance.gameObject.SetActive(false);
+            
             //SideSettingsMenu.instance.gameObject.SetActive(true);
+            */
         }
     }
 

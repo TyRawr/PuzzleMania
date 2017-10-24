@@ -27,6 +27,18 @@ public class SetupMenu : MonoBehaviour {
         MainMenu.instance.playMenu.gameObject.SetActive(true);
     }
     Texture originalImage;
+
+    public void SetupFromCamera()
+    {
+        this.puzzleId = puzzleId;
+        Material m = new Material(Shader.Find("UI/Default"));
+        thumbnail.GetComponent<Image>().material = m;
+        Texture2D tex = ImageManager.texture;
+        thumbnail.material.mainTexture = tex;
+        Texture2D originalSizedImage = null;
+
+    }
+
     public void Setup(string puzzleId = "")
     {
         this.puzzleId = puzzleId;

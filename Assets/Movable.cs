@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movable : MonoBehaviour {
+
+    public float zIndex = 0f;
+
     bool m_held, m_movedThisFrame, m_heldInitial;
     private Camera camera;
+    private float originalZPos;
     Vector3 offset;
     // Use this for initialization
     void Start () {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        originalZPos = transform.position.z;
     }
 	
 	// Update is called once per frame
@@ -17,7 +22,6 @@ public class Movable : MonoBehaviour {
         if (m_held)
         {
             Vector3 touchPos = Vector3.zero;
-            
             
             if (Input.touchCount > 0)
             {
@@ -41,7 +45,7 @@ public class Movable : MonoBehaviour {
                 offset = new Vector3(offset.x, offset.y, 0f);
             }
             
-            Vector3 pos = new Vector3(touchPos.x, touchPos.y, 0f);
+            Vector3 pos = new Vector3(touchPos.x, touchPos.y, zIndex);
 
             this.transform.position = pos - offset;
         }
