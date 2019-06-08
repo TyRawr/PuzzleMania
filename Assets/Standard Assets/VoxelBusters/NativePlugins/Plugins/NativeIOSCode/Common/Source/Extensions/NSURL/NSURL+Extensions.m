@@ -12,10 +12,10 @@
 
 + (NSURL *)createURLWithString:(NSString *)URLString
 {
-	if ([URLString hasPrefix:@"file://"])
-		return [NSURL fileURLWithPath:URLString];
-	else
-		return [NSURL URLWithString:URLString];
+    if (![URLString containsString:@"://"])
+	return [NSURL fileURLWithPath:URLString];
+    else
+	return [NSURL URLWithString:URLString];
 }
 
 @end

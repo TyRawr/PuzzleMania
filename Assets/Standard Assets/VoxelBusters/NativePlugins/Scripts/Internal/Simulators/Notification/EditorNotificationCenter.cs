@@ -1,16 +1,14 @@
-﻿using UnityEngine;
+﻿#if USES_NOTIFICATION_SERVICE && UNITY_EDITOR
+using UnityEngine;
 using System.Collections;
-
-#if USES_NOTIFICATION_SERVICE && UNITY_EDITOR
 using UnityEditor;
 using System.Collections.Generic;
 using VoxelBusters.Utility;
-using VoxelBusters.DebugPRO;
+using VoxelBusters.UASUtils;
 
 namespace VoxelBusters.NativePlugins.Internal
 {
-	[InitializeOnLoad]
-	public class EditorNotificationCenter : AdvancedScriptableObject <EditorNotificationCenter>, ISerializationCallbackReceiver
+	public class EditorNotificationCenter : SharedScriptableObject<EditorNotificationCenter>
 	{
 		#region Constants
 		
@@ -75,17 +73,8 @@ namespace VoxelBusters.NativePlugins.Internal
 		#endregion
 
 		#region Constructors
-		
-		static EditorNotificationCenter ()
-		{
-			EditorUtils.Invoke(()=>{
-#pragma warning disable
-				EditorNotificationCenter _instance	= EditorNotificationCenter.Instance;
-#pragma warning restore 
-			}, 1f);
-		}
 
-		private EditorNotificationCenter ()
+		private EditorNotificationCenter()
 		{
 			ScheduledLocalNotifications			= new List<CrossPlatformNotification>();
 			LocalNotifications					= new List<CrossPlatformNotification>();
@@ -97,54 +86,53 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		#endregion
 
-		#region Unity Methods
+		#region Unity Callbacks
 
-		public void OnAfterDeserialize ()
-		{
-		}
+		/*
+		 public void OnAfterDeserialize()
+		{}
 
-		public void OnBeforeSerialize ()
+		public void OnBeforeSerialize()
 		{			
-			if (EditorApplication.isCompiling)
-				return;
-
-			if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
-				return;
-
 			// Serialise
 			Serialise();
 		}
+        */
 
-		protected override void OnEnable ()
+		protected override void OnEnable()
 		{
-			base.OnEnable ();
+			base.OnEnable();
 		
 			// Deserialise
 			Deserialise();
 		}
 
-		#endregion
+        protected override void OnDisable()
+        {
+            base.OnDisable();
 
-		#region Initialise
+            // Serialise
+            Serialise();
+        }
 
-		public void Initialise ()
+        #endregion
+
+        #region Initialise
+
+        public void Initialise()
 		{
-			string 		_localNotificationPayload	= EditorPrefs.GetString(kDidStartWithLocalNotification, string.Empty);
-			string 		_remoteNotificationPayload	= EditorPrefs.GetString(kDidStartWithRemoteNotification, string.Empty);
+			string 	_localNotificationPayload	= EditorPrefs.GetString(kDidStartWithLocalNotification, string.Empty);
+			string 	_remoteNotificationPayload	= EditorPrefs.GetString(kDidStartWithRemoteNotification, string.Empty);
 		
 			// Get launch local notification
 			if (!string.IsNullOrEmpty(_localNotificationPayload))
 			{
 				CrossPlatformNotification _notification	= new CrossPlatformNotification(JSONUtility.FromJSON(_localNotificationPayload) as IDictionary);
-
-				// Send event
 				SendLocalNotification(_notification, true);
 			}
 			else if (!string.IsNullOrEmpty(_remoteNotificationPayload))		
 			{
 				CrossPlatformNotification _notification	= new CrossPlatformNotification(JSONUtility.FromJSON(_remoteNotificationPayload) as IDictionary);
-
-				// Send event
 				SendRemoteNotification(_notification, true);
 			}
 
@@ -157,17 +145,17 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		#region Local Notification Methods
 
-		public void RegisterNotificationTypes (NotificationType _notificationTypes)
+		public void RegisterNotificationTypes(NotificationType _notificationTypes)
 		{
 			m_supportedNotificationTypes	= _notificationTypes;
 		}
 
-		public NotificationType EnabledNotificationTypes ()
+		public NotificationType EnabledNotificationTypes()
 		{
 			return m_supportedNotificationTypes;
 		}
 		
-		public void ScheduleLocalNotification (CrossPlatformNotification _notification)
+		public void ScheduleLocalNotification(CrossPlatformNotification _notification)
 		{
 			if (0 == (int)m_supportedNotificationTypes)
 			{
@@ -178,18 +166,18 @@ namespace VoxelBusters.NativePlugins.Internal
 			ScheduledLocalNotifications.Add(_notification);
 		}
 
-		public void CancelLocalNotification (CrossPlatformNotification _notification)
+		public void CancelLocalNotification(CrossPlatformNotification _notification)
 		{
 			if (ScheduledLocalNotifications.Contains(_notification))
 				ScheduledLocalNotifications.Remove(_notification);
 		}
 
-		public void CancelAllLocalNotifications ()
+		public void CancelAllLocalNotifications()
 		{
 			ScheduledLocalNotifications.Clear();
 		}
 
-		public void ClearNotifications ()
+		public void ClearNotifications()
 		{
 			ClearLocalNotifications();
 			ClearRemoteNotifications();
@@ -198,12 +186,12 @@ namespace VoxelBusters.NativePlugins.Internal
 			EditorUtility.SetDirty(this);
 		}
 
-		private void ClearLocalNotifications ()
+		private void ClearLocalNotifications()
 		{
 			LocalNotifications.Clear();
 		}
 
-		private void MonitorScheduledLocalNotifications ()
+		private void MonitorScheduledLocalNotifications()
 		{
 			if (ScheduledLocalNotifications == null || ScheduledLocalNotifications.Count == 0)
 				return;
@@ -258,14 +246,14 @@ namespace VoxelBusters.NativePlugins.Internal
 						break;
 
 					default:
-						Console.LogError(Constants.kDebugTag, "[RS] Unhandled notification interval=" + _repeatInterval);
+						DebugUtility.Logger.LogError(Constants.kDebugTag, "[RS] Unhandled notification interval=" + _repeatInterval);
 						break;
 					}
 				}
 			}
 		}
 
-		private void OnReceivingLocalNotification (CrossPlatformNotification _notification)
+		private void OnReceivingLocalNotification(CrossPlatformNotification _notification)
 		{
 			// In edit mode, we will cache all triggered notifications
 			if (IsEditMode())
@@ -295,7 +283,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			EditorUtility.SetDirty(this);
 		}
 		
-		public void OnTappingLocalNotification (CrossPlatformNotification _notification)
+		public void OnTappingLocalNotification(CrossPlatformNotification _notification)
 		{
 			// First of all we need to remove that notification
 			if (LocalNotifications.Contains(_notification))
@@ -319,7 +307,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			}
 		}
 
-		private void SendLocalNotification (CrossPlatformNotification _notification, bool _isLaunchNotification)
+		private void SendLocalNotification(CrossPlatformNotification _notification, bool _isLaunchNotification)
 		{
 			SendNotification(true, _notification, _isLaunchNotification);
 		}
@@ -328,17 +316,9 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		#region Remote Notification Methods
 
-		public void RegisterForRemoteNotifications ()
+		public void RegisterForRemoteNotifications()
 		{
 			m_isRegisteredForRemoteNotifications	= true;
-
-			#if UNITY_ANDROID
-			if (NPSettings.Notification.Android.SenderIDList.Length == 0)
-			{
-				Console.LogError(Constants.kDebugTag, "Add senderid list for notifications to work");
-				return;
-			}
-			#endif
 
 			// Notify registration failure on editor
 			if (NPBinding.NotificationService != null)
@@ -347,17 +327,17 @@ namespace VoxelBusters.NativePlugins.Internal
 			}
 		}
 
-		public void UnregisterForRemoteNotifications ()
+		public void UnregisterForRemoteNotifications()
 		{
 			m_isRegisteredForRemoteNotifications	= false;
 		}
 
-		private void ClearRemoteNotifications ()
+		private void ClearRemoteNotifications()
 		{
 			RemoteNotifications.Clear();
 		}
 	
-		public void ReceivedRemoteNotication (string _notificationPayload)
+		public void ReceivedRemoteNotication(string _notificationPayload)
 		{
 			if (!m_isRegisteredForRemoteNotifications)
 				return;
@@ -398,7 +378,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			EditorUtility.SetDirty(this);
 		}
 
-		public void OnTappingRemoteNotification (CrossPlatformNotification _notification)
+		public void OnTappingRemoteNotification(CrossPlatformNotification _notification)
 		{
 			if (RemoteNotifications.Contains(_notification))
 				RemoteNotifications.Remove(_notification);
@@ -419,7 +399,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			}
 		}
 
-		private void SendRemoteNotification (CrossPlatformNotification _notification, bool _isLaunchNotification)
+		private void SendRemoteNotification(CrossPlatformNotification _notification, bool _isLaunchNotification)
 		{
 			SendNotification(false, _notification, _isLaunchNotification);
 		}
@@ -428,12 +408,12 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		#region Misc Methods
 
-		private bool IsEditMode ()
+		private bool IsEditMode()
 		{
 			return !(EditorApplication.isPlaying || EditorApplication.isPaused);
 		}
 
-		private void SendNotification (bool _isLocalNotification, CrossPlatformNotification _notification, bool _isLaunchNotification)
+		private void SendNotification(bool _isLocalNotification, CrossPlatformNotification _notification, bool _isLaunchNotification)
 		{
 			// Resume application
 			if (EditorApplication.isPaused)
@@ -469,7 +449,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			}
 		}
 
-		private bool DisplayAlertDialog (CrossPlatformNotification _notification)
+		private bool DisplayAlertDialog(CrossPlatformNotification _notification)
 		{
 			string 	_title			= string.Empty;
 			string 	_message		= _notification.AlertBody;
@@ -527,21 +507,21 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		#region Serialisation
 
-		private void Serialise ()
+		private void Serialise()
 		{
 			SetNotificationListInEditorPrefs(kScheduledLocalNotifications, ScheduledLocalNotifications);
 			SetNotificationListInEditorPrefs(kLocalNotifications, LocalNotifications);
 			SetNotificationListInEditorPrefs(kRemoteNotifications, RemoteNotifications);
 		}
 
-		private void Deserialise ()
+		private void Deserialise()
 		{
 			ScheduledLocalNotifications	= GetNotificationListFromEditorPrefs(kScheduledLocalNotifications);
 			LocalNotifications			= GetNotificationListFromEditorPrefs(kLocalNotifications);
 			RemoteNotifications			= GetNotificationListFromEditorPrefs(kRemoteNotifications);
 		}
 
-		private void SetNotificationListInEditorPrefs (string _key, List<CrossPlatformNotification> _notificationList)
+		private void SetNotificationListInEditorPrefs(string _key, List<CrossPlatformNotification> _notificationList)
 		{
 			IList _payloadList	= new List<IDictionary>();
 			string _jsonString	= "[]";
@@ -563,7 +543,7 @@ namespace VoxelBusters.NativePlugins.Internal
 			EditorPrefs.SetString(_key, _jsonString);
 		}
 
-		private List<CrossPlatformNotification> GetNotificationListFromEditorPrefs (string _key)
+		private List<CrossPlatformNotification> GetNotificationListFromEditorPrefs(string _key)
 		{
 			IList _notificationJSONList							= JSONUtility.FromJSON(EditorPrefs.GetString(_key, "[]")) as IList;
 			List<CrossPlatformNotification> _notificationList	= new List<CrossPlatformNotification>(_notificationJSONList.Count);

@@ -9,22 +9,39 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "CustomWebView.h"
 
+typedef enum : NSInteger {
+    moviePlayerStateStopped,
+    moviePlayerStatePlaying,
+    moviePlayerStatePaused,
+    moviePlayerStateInterrupted,
+    moviePlayerStateSeekingForward,
+    moviePlayerStateSeekingBackward
+} MoviePlayerState;
+
+typedef enum : NSInteger {
+    MovieFinishReasonPlaybackEnded,
+    MovieFinishReasonPlaybackError,
+    MovieFinishReasonUserExited,
+} MovieFinishReason;
+
 @class EmbeddedVideoPlayer;
 
 @protocol EmbeddedVideoPlayerDelegate <NSObject>
 
 @required
-- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player stateChangedTo:(MPMoviePlaybackState)state;
-- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player didFinishPlaying:(MPMovieFinishReason)reason;
+- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player stateChangedTo:(MoviePlayerState)state;
+- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player didFinishPlaying:(MovieFinishReason)reason;
 
 @end
+
+
 
 @interface EmbeddedVideoPlayer : CustomWebView
 
 // Properties
 @property(nonatomic, retain)	NSString							*embeddedHTMLString;
 @property(nonatomic, assign)	id <EmbeddedVideoPlayerDelegate> 	delegate;
-@property(nonatomic, readonly) 	MPMoviePlaybackState 				playbackState;
+@property(nonatomic, readonly) 	MoviePlayerState 				playbackState;
 
 // Loading Methods
 - (void)setEmbeddedHTMLString:(NSString *)HTMLString;

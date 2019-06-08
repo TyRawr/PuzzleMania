@@ -2,16 +2,26 @@ fileFormatVersion: 2
 guid: 69548a76857d64be39cc588557e9a67d
 labels:
 - Billing
-- IAP
+- FCM
+- Facebook
+- Gallery
+- GameCenter
+- Googleplayservices
+- Icloud
+- Imagepicker
+- Inapp
+- Native
 - Purchase
 - Purchases
-- Inapp
-- Inapppurchases
-- Buy
-- Freemium
+- Sharing
+- Twitter
+- Webview
+- Whatsapp
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

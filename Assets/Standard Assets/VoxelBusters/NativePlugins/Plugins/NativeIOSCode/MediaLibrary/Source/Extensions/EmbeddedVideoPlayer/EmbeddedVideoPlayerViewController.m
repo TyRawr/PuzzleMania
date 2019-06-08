@@ -74,7 +74,7 @@
 	// Check if we have any pending error
 	if ([self playbackHasFailedBeforeOnFocus])
 	{
-		[self embeddedVideoPlayer:[self videoPlayer] didFinishPlaying:MPMovieFinishReasonPlaybackError];
+		[self embeddedVideoPlayer:[self videoPlayer] didFinishPlaying:MovieFinishReasonPlaybackError];
 		return;
 	}
 }
@@ -105,23 +105,20 @@
 
 #pragma mark - Video Player Delegates
 
-- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player stateChangedTo:(MPMoviePlaybackState)state
+- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player stateChangedTo:(MoviePlayerState)state
 {
-	NSLog(@"[EmbeddedPlayer] New state %d", state);
+	NSLog(@"[EmbeddedPlayer] New state %lu", state);
 }
 
-- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player didFinishPlaying:(MPMovieFinishReason)reason
-{
+- (void)embeddedVideoPlayer:(EmbeddedVideoPlayer *)player didFinishPlaying:(MovieFinishReason)reason {
 	// Check if are player controller is on focus or not
-	if (![self onFocus])
-	{
+	if (![self onFocus]) {
 		[self setPlaybackHasFailedBeforeOnFocus:YES];
 		return;
 	}
 	
 	// Send callback
-	if ([self delegate] != nil && [[self delegate] conformsToProtocol:@protocol(EmbeddedVideoPlayerViewControllerDelegate)])
-	{
+	if ([self delegate] != nil && [[self delegate] conformsToProtocol:@protocol(EmbeddedVideoPlayerViewControllerDelegate)]) {
 		[[self delegate] embeddedVideoPlayerViewController:self didFinishPlaying:reason];
 	}
 }

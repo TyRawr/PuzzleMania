@@ -1,5 +1,20 @@
 fileFormatVersion: 2
 guid: d0f4c88b0f99a433ab380bf0b57e574d
+labels:
+- Billing
+- FCM
+- Facebook
+- Gallery
+- GameCenter
+- Googleplayservices
+- Icloud
+- Imagepicker
+- Inapp
+- Native
+- Sharing
+- Twitter
+- Webview
+- Whatsapp
 timeCreated: 1478549381
 licenseType: Store
 MonoImporter:

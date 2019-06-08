@@ -34,9 +34,9 @@ namespace VoxelBusters.NativePlugins.Internal
 		
 		public BillingProductAndroid (IDictionary _productJsonDict)
 		{
-			m_productIDs		= new PlatformID[]
+			m_productIdentifiers		= new PlatformValue[]
 			{
-				PlatformID.Android(_productJsonDict[kProductIdentifier] as string)
+				PlatformValue.Android(_productJsonDict[kProductIdentifier] as string)
 			};
 			Name				= _productJsonDict[kName] as string;
 			Description			= _productJsonDict[kDescription] as string;

@@ -32,9 +32,9 @@ namespace VoxelBusters.NativePlugins.Internal
 		public BillingProductIOS (IDictionary _productJsonDict)
 		{
 			Name				= _productJsonDict.GetIfAvailable<string>(kTitle);
-			m_productIDs		= new PlatformID[]
+			m_productIdentifiers		= new PlatformValue[]
 			{
-				PlatformID.IOS(_productJsonDict.GetIfAvailable<string>(kProductID))
+				PlatformValue.IOS(_productJsonDict.GetIfAvailable<string>(kProductID))
 			};
 			Description			= _productJsonDict.GetIfAvailable<string>(kDescription);
 			Price				= _productJsonDict.GetIfAvailable<float>(kPrice);

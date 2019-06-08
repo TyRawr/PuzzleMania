@@ -51,7 +51,7 @@ namespace VoxelBusters.Utility
 			splitterStyle.margin	= new RectOffset(_margin, _margin, 7, 7);
 			Rect	_rectPosition	= GUILayoutUtility.GetRect(GUIContent.none, splitterStyle, GUILayout.Height(_thickness));
 			
-			if (Event.current.type == EventType.repaint)
+			if (Event.current.type == EventType.Repaint)
 			{
 				Color 	_resetColor = GUI.color;
 				GUI.color 			= _color;

@@ -51,6 +51,11 @@
 
 #pragma mark - LifeCycle Methods
 
++ (void)load
+{
+    [BillingHandler Instance];
+}
+
 - (id)init
 {
     if ((self = [super init]))
@@ -568,6 +573,11 @@
 	
 	// Verify all the purchases
 	[self verifyRestoreTransactions];
+}
+
+- (BOOL)paymentQueue:(SKPaymentQueue *)queue shouldAddStorePayment:(SKPayment *)payment forProduct:(SKProduct *)product
+{
+  return YES;
 }
 
 @end

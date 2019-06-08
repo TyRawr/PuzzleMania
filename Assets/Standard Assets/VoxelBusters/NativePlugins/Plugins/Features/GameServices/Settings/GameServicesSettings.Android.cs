@@ -8,19 +8,19 @@ namespace VoxelBusters.NativePlugins
 	public partial class GameServicesSettings
 	{
 		[System.Serializable]
-		public class AndroidSettings 
+		public class AndroidSettings
 		{
 			#region Fields
 
 			[SerializeField]
 			[NotifyNPSettingsOnValueChange]
 			[Tooltip ("Your application id in Google Play services.")]
-			private 	string		m_playServicesApplicationID;
+			private 	string		m_playServicesApplicationID = null;
 
 			[SerializeField]
 			[NotifyNPSettingsOnValueChange]
 			[Tooltip ("Your Server Client ID for getting external authentication credentials")]
-			private 	string 		m_serverClientID;
+			private 	string 		m_serverClientID = null;
 
 			[Tooltip ("String formats used to derive completed achievement description. Note: Achievement title will be inserted in place of token \'#\'.")]
 			private 	string[]	m_achievedDescriptionFormats = new string[] {
@@ -30,6 +30,10 @@ namespace VoxelBusters.NativePlugins
 			[SerializeField]
 			[Tooltip ("Allow to show default error dialogs.")]
 			private 	bool		m_showDefaultErrorDialogs = true;
+
+			[SerializeField]
+			[Tooltip ("Allow auto sign in if user logged in previously.")]
+			private 	bool		m_allowAutoLogin = true;
 
 			#endregion
 
@@ -42,7 +46,7 @@ namespace VoxelBusters.NativePlugins
 					return m_playServicesApplicationID;
 				}
 			}
-		
+
 			internal string ServerClientID
 			{
 				get
@@ -64,6 +68,14 @@ namespace VoxelBusters.NativePlugins
 				get
 				{
 					return m_showDefaultErrorDialogs;
+				}
+			}
+
+			internal bool AllowAutoLogin
+			{
+				get
+				{
+					return m_allowAutoLogin;
 				}
 			}
 

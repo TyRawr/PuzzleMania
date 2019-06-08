@@ -505,7 +505,7 @@ namespace VoxelBusters.NativePlugins.Demo
 		private void ReportProgressWithGlobalID (string _achievementGID)
 		{
 			int 	_noOfSteps	= NPBinding.GameServices.GetNoOfStepsForCompletingAchievement(_achievementGID);
-			int		_randomNo	= Random.Range(0, _noOfSteps);
+			int		_randomNo	= Random.Range(0, _noOfSteps+1);
 			double	_progress	= ((double)_randomNo/_noOfSteps) * 100d;
 
 			// If its an incremental achievement, make sure you send a incremented cumulative value everytime you call this method

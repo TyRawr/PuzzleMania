@@ -22,6 +22,8 @@ namespace VoxelBusters.NativePlugins
 			private		string		m_cameraUsagePermissionDescription		= "$(PRODUCT_NAME) uses camera";
 			[SerializeField]
 			private		string		m_photoAlbumUsagePermissionDescription	= "$(PRODUCT_NAME) uses photo library";
+			[SerializeField]
+			private		string		m_photoAlbumModifyUsagePermissionDescription	= "$(PRODUCT_NAME) saves images to photo library";
 
 			#endregion
 
@@ -63,6 +65,14 @@ namespace VoxelBusters.NativePlugins
 				get
 				{
 					return m_photoAlbumUsagePermissionDescription;
+				}
+			}
+
+			public string PhotoAlbumModifyUsagePermissionDescription
+			{
+				get
+				{
+					return m_photoAlbumModifyUsagePermissionDescription;
 				}
 			}
 

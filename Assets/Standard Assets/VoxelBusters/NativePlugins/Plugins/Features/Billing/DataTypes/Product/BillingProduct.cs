@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections;
 
 namespace VoxelBusters.NativePlugins
@@ -25,7 +26,8 @@ namespace VoxelBusters.NativePlugins
 		private 	float			m_price;
 		[Tooltip("Array of string values, where each value represents a product in a specific platform.")]
 		[SerializeField]
-		protected	PlatformID[]	m_productIDs;
+		[FormerlySerializedAs("m_productIDs")]
+		protected	PlatformValue[]	m_productIdentifiers;
 		[SerializeField]
 		[Tooltip("Optional extra data to let store to send back in purchase response. Used for security purposes and supported by Google's Android Platform only currently.")]
 		private 	string 			m_developerPayload;
@@ -135,7 +137,11 @@ namespace VoxelBusters.NativePlugins
 		{
 			get 
 			{
-				return m_productIDs.GetCurrentPlatformID();
+				PlatformValue _platformIdentifier	= PlatformValueHelper.GetCurrentPlatformValue(_array: m_productIdentifiers);
+				if (_platformIdentifier == null)
+					return null;
+
+				return _platformIdentifier.Value;
 			}
 		}
 
@@ -168,7 +174,7 @@ namespace VoxelBusters.NativePlugins
 			this.Description		= _product.Description;
 			this.IsConsumable		= _product.IsConsumable;
 			this.Price				= _product.Price;
-			this.m_productIDs		= _product.m_productIDs;
+			this.m_productIdentifiers		= _product.m_productIdentifiers;
 			this.LocalizedPrice		= _product.LocalizedPrice;
 			this.CurrencyCode		= _product.CurrencyCode;
 			this.CurrencySymbol		= _product.CurrencySymbol;
@@ -190,12 +196,12 @@ namespace VoxelBusters.NativePlugins
 		/// BillingProduct _newProduct	= BillingProduct.Create("name", true, Platform.Android("android-product-id"), Platform.IOS("ios-product-id"));
 		/// </code>
 		/// </example>
-		public static BillingProduct Create (string _name, bool _isConsumable, params PlatformID[] _productIDs)
+		public static BillingProduct Create (string _name, bool _isConsumable, params PlatformValue[] _productIDs)
 		{
 			BillingProduct	_newProduct	= new BillingProduct();
 			_newProduct.Name			= _name;
 			_newProduct.IsConsumable	= _isConsumable;
-			_newProduct.m_productIDs	= _productIDs;
+			_newProduct.m_productIdentifiers	= _productIDs;
 
 			return _newProduct;
 		}
@@ -216,19 +222,19 @@ namespace VoxelBusters.NativePlugins
 
 		internal void RebuildObject ()
 		{
-			if (string.IsNullOrEmpty(m_iosProductId) && string.IsNullOrEmpty(m_androidProductId))
-				return;
-
-			// Copy product identifier information
-			m_productIDs	= new PlatformID[]
+			if (!string.IsNullOrEmpty(m_iosProductId) || !string.IsNullOrEmpty(m_androidProductId))
 			{
-				PlatformID.IOS(m_iosProductId),
-				PlatformID.Android(m_androidProductId)
-			};
+				// Copy product identifier information
+				m_productIdentifiers	= new PlatformValue[]
+				{
+					PlatformValue.IOS(m_iosProductId),
+					PlatformValue.Android(m_androidProductId)
+				};
 
-			// Reset deprecated attribute value
-			m_iosProductId		= null;
-			m_androidProductId	= null;
+				// Reset deprecated attribute value
+				m_iosProductId		= null;
+				m_androidProductId	= null;
+			}
 		}
 
 		#endregion

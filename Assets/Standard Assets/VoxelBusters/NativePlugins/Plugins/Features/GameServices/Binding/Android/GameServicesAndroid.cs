@@ -1,10 +1,8 @@
-﻿using UnityEngine;
+﻿#if USES_GAME_SERVICES && UNITY_ANDROID
+using UnityEngine;
 using System.Collections;
-
-#if USES_GAME_SERVICES && UNITY_ANDROID
 using System;
 using System.Runtime.InteropServices;
-using VoxelBusters.DebugPRO;
 using VoxelBusters.Utility;
 
 namespace VoxelBusters.NativePlugins
@@ -50,7 +48,7 @@ namespace VoxelBusters.NativePlugins
 			LocalUser	= new AndroidLocalUser();
 
 			// Register native API Service
-			Plugin.Call(Native.Methods.REGISTER_SERVICE, NPSettings.Application.SupportedFeatures.UsesCloudServices);
+			Plugin.Call(Native.Methods.REGISTER_SERVICE, NPSettings.Application.SupportedFeatures.UsesCloudServices, NPSettings.GameServicesSettings.Android.AllowAutoLogin);
 			Plugin.Call(Native.Methods.SET_SHOW_DEFAULT_ERROR_DIALOGS, NPSettings.GameServicesSettings.Android.ShowDefaultErrorDialogs);
 		}
 

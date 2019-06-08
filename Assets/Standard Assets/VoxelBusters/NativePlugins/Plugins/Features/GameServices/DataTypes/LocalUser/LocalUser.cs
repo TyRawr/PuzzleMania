@@ -179,21 +179,27 @@ namespace VoxelBusters.NativePlugins
 			{
 				OnInitFail(_error);
 			}
-		}
+        }
 		
 		protected virtual void OnInitSuccess (string _error)
 		{
 			// Send auth finished event
 			if (AuthenticationFinishedEvent != null)
 				AuthenticationFinishedEvent(true, _error);
-		}
+
+            // unset here
+            AuthenticationFinishedEvent = null;
+        }
 		
 		protected virtual void OnInitFail (string _error)
 		{
 			// Send auth finished event
 			if (AuthenticationFinishedEvent != null)
 				AuthenticationFinishedEvent(false, _error);
-		}
+
+            // unset here
+            AuthenticationFinishedEvent = null;
+        }
 
 		protected virtual void LoadFriendsFinished (IDictionary _dataDict)
 		{}

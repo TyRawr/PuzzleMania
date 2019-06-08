@@ -14,8 +14,8 @@
 @protocol EmbeddedVideoPlayerViewControllerDelegate <NSObject>
 
 @required
-- (void)embeddedVideoPlayerViewController:(EmbeddedVideoPlayerViewController *)controller didFinishPlaying:(MPMovieFinishReason)reason;
-
+- (void)embeddedVideoPlayerViewController:(EmbeddedVideoPlayerViewController *)controller
+                         didFinishPlaying:(MovieFinishReason)reason;
 @end
 
 @interface EmbeddedVideoPlayerViewController : UIViewController <EmbeddedVideoPlayerDelegate>

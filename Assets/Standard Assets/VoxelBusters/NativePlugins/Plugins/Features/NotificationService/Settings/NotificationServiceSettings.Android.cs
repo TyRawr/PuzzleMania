@@ -12,9 +12,6 @@ namespace VoxelBusters.NativePlugins
 		{
 			#region Fields
 			
-			[SerializeField, NotifyNPSettingsOnValueChange]
-			[Tooltip ("An array of sender IDs used to register physical device with GCM. Sender IDs are basically Google Project Numbers.")]
-			private 	string[]	 	m_senderIDs;
 			private 	bool	 		m_needsBigStyle		= false; 
 			[SerializeField, NotifyNPSettingsOnValueChange]
 			[Tooltip ("If enabled, device vibrates on receiving a notification.")]
@@ -22,10 +19,10 @@ namespace VoxelBusters.NativePlugins
 			
 			[SerializeField, NotifyNPSettingsOnValueChange]
 			[Tooltip ("The texture used as small icon in post Android L Devices.")]
-			private 	Texture2D 		m_whiteSmallIcon;
+            private 	Texture2D 		m_whiteSmallIcon    = null;
 			[SerializeField, NotifyNPSettingsOnValueChange]
 			[Tooltip ("The texture used as small icon in pre Android L Devices.")]
-			private 	Texture2D 		m_colouredSmallIcon;
+            private 	Texture2D 		m_colouredSmallIcon = null;
 			
 			[Header("Payload Keys:")]
 			[SerializeField]
@@ -47,14 +44,6 @@ namespace VoxelBusters.NativePlugins
 			#endregion
 			
 			#region Properties
-			
-			internal string[] SenderIDList
-			{
-				get
-				{
-					return m_senderIDs;
-				}
-			}
 			
 			internal bool NeedsBigStyle 
 			{

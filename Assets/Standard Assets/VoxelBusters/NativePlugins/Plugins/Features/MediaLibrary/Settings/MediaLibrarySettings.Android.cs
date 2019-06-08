@@ -4,29 +4,43 @@ using VoxelBusters.Utility;
 
 namespace VoxelBusters.NativePlugins
 {
-	public partial class MediaLibrarySettings
-	{
+    using Internal;
+    public partial class MediaLibrarySettings
+    {
 		[System.Serializable]
-		public class AndroidSettings 
+		public class AndroidSettings
 		{
 			#region Fields
-			
+
 			[SerializeField]
-			[Tooltip("Youtube API key assigned to your application.")]
-			private 	string 		m_youtubeAPIKey;
-			
+      [NotifyNPSettingsOnValueChange]
+      [Tooltip("Youtube API key assigned to your application.")]
+			private 	string 		m_youtubeAPIKey  = null;
+
+			[SerializeField]
+			[Tooltip("If you set this to false, the images will be saved to default gallery. Else to app specific album.")]
+			private 	bool 		m_saveToGallerySavesToAppFolder = true;
+
 			#endregion
-			
+
 			#region Properties
-			
+
 			internal string YoutubeAPIKey
 			{
-				get 
-				{ 
-					return m_youtubeAPIKey; 
+				get
+				{
+					return m_youtubeAPIKey;
 				}
 			}
-			
+
+			internal bool SaveGalleryImagesToAppSpecificFolder
+			{
+				get
+				{
+					return m_saveToGallerySavesToAppFolder;
+				}
+			}
+
 			#endregion
 		}
 	}

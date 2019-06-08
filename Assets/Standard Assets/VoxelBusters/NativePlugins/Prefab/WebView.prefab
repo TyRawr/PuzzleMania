@@ -5,10 +5,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Component:
-  - component: {fileID: 400000}
-  - component: {fileID: 11400000}
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: WebView
   m_TagString: Untagged
@@ -28,7 +28,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -42,7 +41,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canHide: 1
   m_canBounce: 1
-  m_controlType: 0
+  m_controlType: 1
   m_showSpinnerOnLoad: 0
   m_autoShowOnLoadFinish: 1
   m_scalesPageToFit: 1
@@ -50,8 +49,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: -1
-    height: -1
+    width: 1
+    height: 1
   m_backgroundColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -64,3 +63,4 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
+  m_IsExploded: 1

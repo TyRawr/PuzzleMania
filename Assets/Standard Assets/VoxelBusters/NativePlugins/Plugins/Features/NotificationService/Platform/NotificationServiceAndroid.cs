@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using VoxelBusters.Utility;
+using VoxelBusters.UASUtils;
 
 namespace VoxelBusters.NativePlugins.Internal
 {
@@ -26,7 +27,7 @@ namespace VoxelBusters.NativePlugins.Internal
 #endif
 			// Pass sender id list and customkeys to Native platform
 			Dictionary<string, string> customKeys = GetCustomKeysForNotfication(_settings);
-			SendConfigInfoToNative(_settings.Android.SenderIDList, customKeys, _settings.Android.NeedsBigStyle, _settings.Android.WhiteSmallIcon, _settings.Android.AllowVibration);
+            SendConfigInfoToNative(new string[]{}, customKeys, _settings.Android.NeedsBigStyle, _settings.Android.WhiteSmallIcon, _settings.Android.AllowVibration);
 		}
 
 		public void RegisterNotificationTypes (NotificationType _notificationTypes)
@@ -102,13 +103,6 @@ namespace VoxelBusters.NativePlugins.Internal
 
 		private void SendConfigInfoToNative(string[] _senderIDs, Dictionary<string,string> _customKeysInfo, bool _needsBigStyle, Texture2D _whiteSmallNotificationIcon, bool _allowVibration)
 		{
-			if (_senderIDs.Length == 0)
-			{
-#if NP_DEBUG
-				Debug.LogError("Add senderid list for notifications to work");
-#endif
-			}
-
 			List<string> list =  new List<string>(_senderIDs);	
 			bool _usesExternalRemoteNotificationService = NPSettings.Application.SupportedAddonServices.UsesOneSignal;
 

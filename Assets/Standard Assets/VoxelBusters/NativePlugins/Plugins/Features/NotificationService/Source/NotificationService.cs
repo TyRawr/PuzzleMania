@@ -55,6 +55,7 @@ namespace VoxelBusters.NativePlugins
 
 			OneSignal.StartInit(appID: _settings.AppID, googleProjectNumber: _settings.GoogleProjectNumber)
 					.HandleNotificationReceived(DidReceiveOneSignalNotification)
+					.HandleNotificationOpened(DidReceiveOneSignalLaunchNotification)
 					.InFocusDisplaying(OneSignal.OSInFocusDisplayOption.None)
 					.Settings(new Dictionary<string, bool>(){
 						{ OneSignal.kOSSettingsAutoPrompt, false } })
@@ -138,26 +139,26 @@ namespace VoxelBusters.NativePlugins
 		{
 			m_platform.ClearNotifications();
 		}
-		
-		#endregion
 
-		#region Remote Notification Methods
+        #endregion
 
-		/// <summary>
-		/// Registers to receive remote notifications via Push Notification service.
-		/// </summary>
-		/// <description>
-		/// Call this method to initiate the registration process with Push Notification service. 
-		/// When registration process completes, <see cref="DidFinishRegisterForRemoteNotificationEvent"/> is fired.
-		/// If registration succeeds, then you should pass device token to the server you use to generate remote notifications.
-		/// </description>
-		/// <remarks>
-		/// \note If you want your app’s remote notifications to display alerts, play sounds etc you must call the <see cref="RegisterNotificationTypes"/> method before registering for remote notifications.
-		/// </remarks>
-		public void RegisterForRemoteNotifications ()
-		{
+        #region Remote Notification Methods
+
+        /// <summary>
+        /// Registers to receive remote notifications via Push Notification service.
+        /// </summary>
+        /// <description>
+        /// Call this method to initiate the registration process with Push Notification service. 
+        /// When registration process completes, <see cref="DidFinishRegisterForRemoteNotificationEvent"/> is fired.
+        /// If registration succeeds, then you should pass device token to the server you use to generate remote notifications.
+        /// </description>
+        /// <remarks>
+        /// \note If you want your app’s remote notifications to display alerts, play sounds etc you must call the <see cref="RegisterNotificationTypes"/> method before registering for remote notifications.
+        /// </remarks>
+        public void RegisterForRemoteNotifications()
+        {
 #if (!USES_ONE_SIGNAL || UNITY_EDITOR)
-			m_platform.RegisterForRemoteNotifications();
+            m_platform.RegisterForRemoteNotifications();
 #else
 			if (!m_registeredForOneSignalPushNotifications)
 			{
@@ -165,9 +166,12 @@ namespace VoxelBusters.NativePlugins
 
 				OneSignal.RegisterForPushNotifications();
 				OneSignal.SetSubscription(true);
+                OneSignal.IdsAvailable(DidReceiveIDsAvaialble);
+
+				//DidRegisterRemoteNotification(null);
 			}
 #endif
-		}
+        }
 
 		/// <summary>
 		/// Unregister for all remote notifications received via Push Notification service.
@@ -183,7 +187,7 @@ namespace VoxelBusters.NativePlugins
 			if (m_registeredForOneSignalPushNotifications)
 			{
 				m_registeredForOneSignalPushNotifications	= false;
-
+                OneSignal.idsAvailableDelegate = null;
 				OneSignal.SetSubscription(false);
 			}
 #endif

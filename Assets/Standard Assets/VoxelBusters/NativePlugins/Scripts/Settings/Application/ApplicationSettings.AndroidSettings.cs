@@ -3,8 +3,9 @@ using System.Collections;
 
 namespace VoxelBusters.NativePlugins
 {
-	public partial class ApplicationSettings 
-	{
+    using Internal;
+    public partial class ApplicationSettings
+    {
 		/// <summary>
 		/// Application Settings specific to Android platform.
 		/// </summary>

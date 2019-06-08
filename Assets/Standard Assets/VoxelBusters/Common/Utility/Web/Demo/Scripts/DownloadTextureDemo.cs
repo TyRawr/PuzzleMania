@@ -4,15 +4,15 @@ using DownloadTexture = VoxelBusters.Utility.DownloadTexture;
 
 namespace VoxelBusters.Utility
 {
-	public class DownloadTextureDemo : MonoBehaviour 
+	public class DownloadTextureDemo : MonoBehaviour
 	{
 		#region Properties
 
 		[SerializeField]
-		private string 			m_URLString;
+		private string 			m_URLString = null;
 
 		[SerializeField]
-		private MeshRenderer 	m_renderer;
+		private MeshRenderer 	m_renderer = null;
 
 		#endregion
 
@@ -37,7 +37,7 @@ namespace VoxelBusters.Utility
 				if (_texture != null)
 					m_renderer.sharedMaterial.mainTexture	= _texture;
 			};
-			
+
 			// Start download
 			_newDownload.StartRequest();
 		}

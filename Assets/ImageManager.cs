@@ -78,7 +78,7 @@ public class ImageManager : MonoBehaviour {
     {
         AssetBundle myLoadedThumbsAssetBundle = null;
         AssetBundle[] bundles = Resources.FindObjectsOfTypeAll<AssetBundle>();
-        Caching.CleanCache();
+        Caching.ClearCache();
         for (int i = 0; i < bundles.Length; i++)
         {
             Debug.Log("Bundle: " + bundles[i].name);
@@ -133,7 +133,7 @@ public class ImageManager : MonoBehaviour {
     {
         while (!Caching.ready)
             yield return null;
-        Caching.CleanCache();
+        Caching.ClearCache();
         var www = new WWW("https://s3-us-west-2.amazonaws.com/puzzle-tyrawr/images/originals/file_" + imgNumber + ".jpeg" ); // all files are jpeg
         ImageManager.texture = new Texture2D(4, 4, TextureFormat.DXT1, false);
         //WWW www = new WWW(url);

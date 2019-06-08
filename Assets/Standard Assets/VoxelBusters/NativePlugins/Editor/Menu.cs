@@ -71,6 +71,43 @@ namespace VoxelBusters.NativePlugins.Internal
 			EditorPushNotificationService.ShowWindow();
 		}
 #endif
+
+
+#if USES_BILLING
+		[MenuItem(kMenuNodeSimulation + "/Helpers/Clear Purchase History", false, kMenuItemPrioritySimulate)]
+		private static void ClearPurchases ()
+		{
+			EditorStore.ClearPurchaseHistory();
+		}
+#endif
+
+#if USES_GAME_SERVICES
+		[MenuItem(kMenuNodeSimulation + "/Helpers/Refresh Game Center", false, kMenuItemPrioritySimulate)]
+		private static void RefreshGameCenter ()
+		{
+			EditorGameCenter.Instance.Refresh();
+		}
+
+		[MenuItem(kMenuNodeSimulation + "/Helpers/Reset Game Center Achievements", false, kMenuItemPrioritySimulate)]
+		private static void ResetGameAchievements ()
+		{
+			EditorGameCenter.Instance.ResetAchievements();
+		}
+#endif
+
+#if USES_NOTIFICATION_SERVICE
+		[MenuItem(kMenuNodeSimulation + "/Helpers/Clear Notifications", false, kMenuItemPrioritySimulate)]
+		private static void ClearAllNotifications ()
+		{
+			EditorNotificationCenter.Instance.ClearNotifications();
+		}
+
+		[MenuItem(kMenuNodeSimulation + "/Helpers/Cancel Notifications", false, kMenuItemPrioritySimulate)]
+		private static void CancelAllNotifications ()
+		{
+			EditorNotificationCenter.Instance.CancelAllLocalNotifications();
+		}
+#endif
 		
 		#endregion
 

@@ -7,9 +7,9 @@ namespace VoxelBusters.NativePlugins
 	public partial class CloudServicesSettings
 	{
 		#region Fields
-		
+
 		[SerializeField]
-		private 	AndroidSettings	m_android;
+		private 	AndroidSettings	m_android = null;
 
 		#endregion
 
@@ -17,12 +17,12 @@ namespace VoxelBusters.NativePlugins
 
 		internal AndroidSettings Android
 		{
-			get 
-			{ 
-				return m_android; 
+			get
+			{
+				return m_android;
 			}
 		}
-		
+
 		#endregion
 	}
 }

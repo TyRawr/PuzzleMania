@@ -6,67 +6,75 @@ using System.Reflection;
 
 namespace VoxelBusters.Utility
 {
-	public static class IDictionaryExtensions 
-	{
-		public static bool ContainsKeyPath (this IDictionary _sourceDictionary, string _keyPath)
-		{
-			if (string.IsNullOrEmpty(_keyPath))
-				return false;
-		
-			try
-			{
-				string[] 	_pathComponents	= _keyPath.Split('/');
-				int 		_count			= _pathComponents.Length;
-				IDictionary _currentDict	= _sourceDictionary;
+    public static class IDictionaryExtensions
+    {
+        public static bool ContainsKeyPath(this IDictionary _sourceDictionary, string _keyPath)
+        {
+            if (string.IsNullOrEmpty(_keyPath))
+                return false;
 
-				for (int _pIter = 0; _pIter < _count; _pIter++)
-				{
-					string 		_key		= _pathComponents[_pIter];
+            try
+            {
+                string[] _pathComponents = _keyPath.Split('/');
+                int _count = _pathComponents.Length;
+                IDictionary _currentDict = _sourceDictionary;
 
-					if (_currentDict == null || !_currentDict.Contains(_key))
-						return false;
+                for (int _pIter = 0; _pIter < _count; _pIter++)
+                {
+                    string _key = _pathComponents[_pIter];
 
-					// Update reference to object at current key path
-					_currentDict			= _currentDict[_key] as IDictionary;
-				}
-				
-				return true;
-			}
-			catch (System.Exception _exception)
-			{
-				Debug.LogWarning("[IDictionaryExtensions] " + _exception.Message);
+                    if (_currentDict == null || !_currentDict.Contains(_key))
+                        return false;
 
-				return false;
-			}
-		}
-	
-		public static T GetIfAvailable <T> (this IDictionary _sourceDictionary, string _key)
-		{
-			if (_key == null || !_sourceDictionary.Contains(_key))
-				return default(T);
+                    // Update reference to object at current key path
+                    _currentDict = _currentDict[_key] as IDictionary;
+                }
 
-			object	_value		= _sourceDictionary[_key];
-			Type 	_targetType	= typeof(T);
+                return true;
+            }
+            catch (System.Exception _exception)
+            {
+                Debug.LogWarning("[IDictionaryExtensions] " + _exception.Message);
 
-			if (_value == null)
-				return default(T);
+                return false;
+            }
+        }
 
-			if (_targetType.IsInstanceOfType(_value))
-				return (T)_value;
+        public static T GetIfAvailable<T>(this IDictionary _sourceDictionary, string _key, T _defaultValue = default(T))
+        {
+            try
+            {
+                if (_key == null || !_sourceDictionary.Contains(_key))
+                    return _defaultValue;
+
+                object _value = _sourceDictionary[_key];
+                Type _targetType = typeof(T);
+
+                if (_value == null)
+                    return _defaultValue;
+
+                if (_targetType.IsInstanceOfType(_value))
+                    return (T)_value;
 
 #if !NETFX_CORE
-			if (_targetType.IsEnum)
+                if (_targetType.IsEnum)
 #else
-			if (_targetType.GetTypeInfo().IsEnum)
+    			if (_targetType.GetTypeInfo().IsEnum)
 #endif
-			{
-				return (T)Enum.ToObject(_targetType, _value);
-			}
-			else
-			{
-				return (T)System.Convert.ChangeType(_value, _targetType);
-			}
-		}
+                {
+                    return (T)Enum.ToObject(_targetType, _value);
+                }
+                else
+                {
+                    return (T)System.Convert.ChangeType(_value, _targetType);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("Exception while converting for key : " + _key + " " + e);
+                return _defaultValue;
+		    }
+        }
 
 		public static T GetIfAvailable <T> (this IDictionary _sourceDictionary, string _key, string _path)
 		{

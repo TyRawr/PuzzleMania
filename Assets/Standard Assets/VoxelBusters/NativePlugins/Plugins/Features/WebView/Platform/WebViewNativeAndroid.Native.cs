@@ -41,6 +41,7 @@ namespace VoxelBusters.NativePlugins.Internal
 				internal const string SET_ALLOW_MEDIA_PLAYBACK 				= "setAllowMediaPlayback";
 				internal const string ADD_NEW_SCHEME 						= "addNewScheme";
 				internal const string CLEAR_CACHE 							= "clearCache";
+				internal const string SET_FULL_SCREEN_MODE					= "setFullScreenMode";
 			}
 		}
 		

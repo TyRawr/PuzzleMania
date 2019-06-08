@@ -13,7 +13,7 @@
 #import "HandlerBase.h"
 #import "EmbeddedVideoPlayerViewController.h"
 #import "HybridActionSheet.h"
-
+#import <AVKit/AVKit.h>
 enum eImageSource
 {
     ALBUM	= 0,
@@ -38,15 +38,13 @@ enum ePickVideoFinishReason
 };
 typedef enum ePickVideoFinishReason ePickVideoFinishReason;
 
-
 @interface MediaLibraryHandler : HandlerBase <UIAlertViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, HybridActionSheetDelegate, EmbeddedVideoPlayerViewControllerDelegate, UIPopoverControllerDelegate>
 
 // Properties
 @property(nonatomic)            float                  			scaleFactor;
 @property(nonatomic)            BOOL							allowsFullScreenVideoPlayback;
 @property(nonatomic)            BOOL							allowsImageEditing;
-@property(nonatomic, retain)    UIPopoverController    			*popoverController;
-@property(nonatomic, assign)    MPMoviePlayerViewController		*moviePlayerVC;
+@property(nonatomic, assign)    AVPlayerViewController		    *moviePlayerVC;
 @property(nonatomic, assign)    EmbeddedVideoPlayerViewController	*embeddedPlayerVC;
 
 // Related to image

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 #if USES_GAME_SERVICES && UNITY_ANDROID

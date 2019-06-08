@@ -56,6 +56,12 @@ echo "Making sdk.soomla.integration.jar"
 jar -cf feature.sdk.soomla.integration.jar com/voxelbusters/nativeplugins/features/external/sdk/soomla
 rm -rf com/voxelbusters/nativeplugins/features/external/sdk/soomla
 
+
+echo "Making external jars…"
+jar -cf feature.externallibrary.shortcutbadger.jar com/voxelbusters/nativeplugins/externallibrary/notification/shortcutbadger
+rm -rf com/voxelbusters/nativeplugins/externallibrary/notification/shortcutbadger
+
+
 jar -cf nativeplugins.core.jar com/voxelbusters
 
 rm -rf com
