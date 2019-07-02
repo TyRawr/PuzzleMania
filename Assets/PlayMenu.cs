@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/*
 using VoxelBusters;
 using VoxelBusters.Utility;
 using VoxelBusters.NativePlugins;
+*/
 
 public class PlayMenu : MonoBehaviour {
     public static PlayMenu instance;
@@ -25,10 +27,11 @@ public class PlayMenu : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.P) || Input.touchCount > 2)
         {
-            PickImageFinished(ePickImageFinishReason.SELECTED, fallbackCameraImg);
+            //PickImageFinished(ePickImageFinishReason.SELECTED, fallbackCameraImg);
         }
 	}
 
+    /*
     private void PickImageFinished(ePickImageFinishReason _reason, Texture2D _image)
     {
         if (_reason == ePickImageFinishReason.SELECTED)
@@ -37,23 +40,19 @@ public class PlayMenu : MonoBehaviour {
             MainMenu.instance.cameraMenu.PickImageFinished(_reason, _image);
             
             PlayMenu.instance.gameObject.SetActive(false);
-            /*
-            GameObject piece = GameObject.Find("Piece");
-            piece.GetComponent<Renderer>().material.mainTexture = _image;
-            GameObject pieceManager = GameObject.Find("PieceManager");
-            pieceManager.GetComponent<PieceManager>().BuildPieces();
-            
-            //SideSettingsMenu.instance.gameObject.SetActive(true);
-            */
+
         }
     }
+    */
 
+    /*
     public void Custom()
     {
         NPBinding.UI.SetPopoverPointAtLastTouchPosition();
         // Pick image
         NPBinding.MediaLibrary.PickImage(eImageSource.ALBUM, 1.0f, PickImageFinished);
     }
+    */
 
     public void SetSelected(string selectedID,GameObject selectedObject)
     {

@@ -62,6 +62,6 @@ public class SetupMenu : MonoBehaviour {
         GameObject gameBoard = GameObject.Find("Gameboard");
         gameBoard.transform.position = Vector3.zero;
         PieceManager.instance.BuildPieces();
-        PieceManager.instance.ResetPieces();
+        //PieceManager.instance.ResetPieces();
     }
 }

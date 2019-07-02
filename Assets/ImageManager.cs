@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/*
 using VoxelBusters;
 using VoxelBusters.Utility;
 using VoxelBusters.NativePlugins;
+*/
 
 public class ImageManager : MonoBehaviour {
     public static ImageManager instance;
@@ -30,7 +32,7 @@ public class ImageManager : MonoBehaviour {
         yield return null;
     }
 
-
+    /*
     private void PickImageFinished(ePickImageFinishReason _reason, Texture2D _image)
     {
         if(_reason == ePickImageFinishReason.SELECTED)
@@ -42,6 +44,7 @@ public class ImageManager : MonoBehaviour {
         }
         message += "" + _reason.ToString();
     }
+    */
 
     /*
     private void OnGUI() {

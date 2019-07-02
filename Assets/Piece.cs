@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Piece : MonoBehaviour {
+    public int cols = 3;
     public int row;
     public int col;
     public PieceManager.EDGETYPE up, right, down, left;
@@ -46,6 +47,7 @@ public class Piece : MonoBehaviour {
     }
     private bool m_movedThisFrame = false;
     // Update is called once per frame
+
     void Update () {
         m_movedThisFrame = false;
         if(m_held)
@@ -79,9 +81,10 @@ public class Piece : MonoBehaviour {
             //everything I am attached to, move
             StartAlignment();
         }
-        
-
     }
+
+
+
 
     private void StartAlignment()
     {

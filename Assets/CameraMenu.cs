@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/*
 using VoxelBusters;
 using VoxelBusters.Utility;
 using VoxelBusters.NativePlugins;
+*/
 
 public class CameraMenu : MonoBehaviour {
     public static CameraMenu instance;
@@ -43,6 +45,7 @@ public class CameraMenu : MonoBehaviour {
         MainMenu.instance.setupMenu.SetupFromCamera();
     }
 
+    /*
     public void PickImageFinished(ePickImageFinishReason _reason, Texture2D _image)
     {
         if (_reason == ePickImageFinishReason.SELECTED)
@@ -62,6 +65,7 @@ public class CameraMenu : MonoBehaviour {
             //SideSettingsMenu.instance.gameObject.SetActive(true);
         }
     }
+    */
 
     public void OnEnable()
     {

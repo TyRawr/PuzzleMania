@@ -266,7 +266,8 @@ public class PieceManager : MonoBehaviour
         }
         return texture;
     }
-
+    public int _ii;
+    public int _jj;
     public void BuildPieces()
     {
         GameObject gameboard = GameObject.Find("Gameboard");
@@ -288,22 +289,25 @@ public class PieceManager : MonoBehaviour
         float uvHeight = 1.0f / rows;
 
         Piece[,] pieces = new Piece[rows, cols];
-        for (int j = 0; j < cols; j++)
+        for (int col = 0; col < cols; col++)
         {
-            for (int i = 0; i < rows; i++)
+            for (int row = 0; row < rows; row++)
             {
                 Piece piece = ((GameObject)Instantiate(piecePrefab)).GetComponent<Piece>();
-                pieces[j, i] = piece;
+                piece.name += "col: " + col + "  row: " + row;
+                pieces[col, row] = piece;
                 piece.transform.position = offset;
                 piece.transform.localScale = Vector3.one * 2f;
-                pieceRenderers[j, i] = piece.GetComponent<Renderer>();
+                pieceRenderers[col, row] = piece.GetComponent<Renderer>();
                 Mesh mesh = piece.GetComponent<MeshFilter>().mesh;
                 Vector2[] uvs = mesh.uv;
                 mesh.uv2 = uvs;
-                uvs[0] = new Vector2((i - 1) * uvWidth, (j - 1) * uvHeight);
-                uvs[3] = new Vector2((i - 1) * uvWidth, (j + 2) * uvHeight);
-                uvs[1] = new Vector2((i + 2) * uvWidth, (j + 2) * uvHeight);
-                uvs[2] = new Vector2((i + 2) * uvWidth, (j - 1) * uvHeight);
+
+                uvs[0] = new Vector2((row - 1) * uvWidth,  (col - 1) * uvHeight);
+                uvs[1] = new Vector2((row + 2) * uvWidth,  (col - 1) * uvHeight);
+                uvs[3] = new Vector2((row + 2) * uvWidth, (col + 2) * uvHeight);
+                uvs[2] = new Vector2((row - 1) * uvWidth,  (col + 2) * uvHeight);
+
                 mesh.uv = uvs;
 
                 offset.x += 1.25f;
@@ -313,6 +317,7 @@ public class PieceManager : MonoBehaviour
             offset.x = startX;
         }
 
+        
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
@@ -412,6 +417,7 @@ public class PieceManager : MonoBehaviour
                 pieces[row, col].left = left;
                 pieces[row, col].row = row;
                 pieces[row, col].col = col;
+                
                 Texture2D upMask, rightMask, downMask, leftMask;
                 //get actual textures.
                 upMask = GetMaskFromEdgeAndConnectionType(up, "up");
@@ -428,8 +434,10 @@ public class PieceManager : MonoBehaviour
                 props.SetTexture("_Mask3", downMask);
                 props.SetTexture("_Mask4", leftMask);
                 renderer.SetPropertyBlock(props);
+                
             }
         }
+        
     }
 
     private void OnGUI()
